@@ -7,4 +7,4 @@ https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2
 
 The data was downloaded, cleaned and transformed into 4 subsets of data, compact and suitable enough, for use by this Shiny App.
 
-The source code used for this is **PA2_RR_CreateCleanDataSubset.R**
+The source code used for this is **PA2_RR_CreateCleanDataSubset.R** and the include file to clean up 'EVTYPE' data is **WeatherTypes.R**
