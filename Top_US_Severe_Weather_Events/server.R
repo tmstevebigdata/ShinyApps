@@ -1,7 +1,6 @@
 # server.R
 
 ## Initial setup
-rm(list = ls())
 options(warn = -1)
 
 options(digits = 2)
@@ -40,43 +39,43 @@ shinyServer(function(input, output, session) {
   }
 
   ## Subset data
-  df_Fatalities <- df_Fatalities[order(df_Fatalities$Fatalities, decreasing = TRUE), ]
-  df_Fatalities <- head(df_Fatalities, TopNum)
-  df_Fatalities <- df_Fatalities[order(df_Fatalities$Fatalities, decreasing = FALSE), ]
+  df_Fatalities_SS <- df_Fatalities[order(df_Fatalities$Fatalities, decreasing = TRUE), ]
+  df_Fatalities_SS <- head(df_Fatalities_SS, TopNum)
+  df_Fatalities_SS <- df_Fatalities_SS[order(df_Fatalities_SS$Fatalities, decreasing = FALSE), ]
 
-  df_Injuries <- df_Injuries[order(df_Injuries$Injuries, decreasing = TRUE), ]
-  df_Injuries <- head(df_Injuries, TopNum)
-  df_Injuries <- df_Injuries[order(df_Injuries$Injuries, decreasing = FALSE), ]
+  df_Injuries_SS <- df_Injuries[order(df_Injuries$Injuries, decreasing = TRUE), ]
+  df_Injuries_SS <- head(df_Injuries_SS, TopNum)
+  df_Injuries_SS <- df_Injuries_SS[order(df_Injuries_SS$Injuries, decreasing = FALSE), ]
 
-  df_Property_Damages <- df_Property_Damages[order(df_Property_Damages$Value_Mil, decreasing = TRUE), ]
-  df_Property_Damages <- head(df_Property_Damages, TopNum)
-  df_Property_Damages <- df_Property_Damages[order(df_Property_Damages$Value_Mil, decreasing = FALSE), ]
+  df_Property_Damages_SS <- df_Property_Damages[order(df_Property_Damages$Value_Mil, decreasing = TRUE), ]
+  df_Property_Damages_SS <- head(df_Property_Damages_SS, TopNum)
+  df_Property_Damages_SS <- df_Property_Damages_SS[order(df_Property_Damages_SS$Value_Mil, decreasing = FALSE), ]
 
-  df_Crop_Damages <- df_Crop_Damages[order(df_Crop_Damages$Value_Mil, decreasing = TRUE), ]
-  df_Crop_Damages <- head(df_Crop_Damages, TopNum)
-  df_Crop_Damages <- df_Crop_Damages[order(df_Crop_Damages$Value_Mil, decreasing = FALSE), ]
+  df_Crop_Damages_SS <- df_Crop_Damages[order(df_Crop_Damages$Value_Mil, decreasing = TRUE), ]
+  df_Crop_Damages_SS <- head(df_Crop_Damages_SS, TopNum)
+  df_Crop_Damages_SS <- df_Crop_Damages_SS[order(df_Crop_Damages_SS$Value_Mil, decreasing = FALSE), ]
 
   ## RESULTS
 
   ## -- Top Fatalities --
-  Total_Fatalities <- sum(df_Fatalities$Fatalities)
+  Total_Fatalities <- sum(df_Fatalities_SS$Fatalities)
   Total_Fatalities <- format(Total_Fatalities, big.mark = ',')
 
   ## -- Top Injuries --
-  Total_Injuries <- sum(df_Injuries$Injuries)
+  Total_Injuries <- sum(df_Injuries_SS$Injuries)
   Total_Injuries <- format(Total_Injuries, big.mark = ',')
 
   ## -- Top Property Damages --
-  Total_Property_Damages <- sum(df_Property_Damages$Value_Mil)
+  Total_Property_Damages <- sum(df_Property_Damages_SS$Value_Mil)
   Total_Property_Damages <- format(Total_Property_Damages, big.mark = ',')
 
   ## -- Top Crop Damages --
-  Total_Crop_Damages <- sum(df_Crop_Damages$Value_Mil)
+  Total_Crop_Damages <- sum(df_Crop_Damages_SS$Value_Mil)
   Total_Crop_Damages <- format(Total_Crop_Damages, big.mark = ',')
 
   ## -- Set up variables for plot --
-  vY <- df_Fatalities$Fatalities
-  vX <- df_Fatalities$EVType
+  vY <- df_Fatalities_SS$Fatalities
+  vX <- df_Fatalities_SS$EVType
   vHoriz <- TRUE
   vWidth <- 1
   vCol <- 'Red'
@@ -86,7 +85,7 @@ shinyServer(function(input, output, session) {
   vCexLab <- 1.2
   vColMain <- 'Purple'
   vColLab <- 'Red'
-  vMain <- paste('Top', TopNum, 'Fatalities caused by Severe Weather\n(Years 1980 - 2011)\nTotal Fatalities =', format(Total_Fatalities, big.mark = ','))
+  vMain <- paste('Top', TopNum, 'Fatalities caused by Severe Weather\n(Years 1980 - 2011)\nTotal Fatalities =', Total_Fatalities)
   vXLab <- 'Weather Event'
   vYLab <- 'Number of Fatalities'
 
@@ -99,9 +98,9 @@ shinyServer(function(input, output, session) {
   ## Plot Fatalities
   fPlot()
 
-  vY <- df_Injuries$Injuries
-  vX <- df_Injuries$EVType
-  vMain <- paste('Top', TopNum, 'Injuries caused by Severe Weather\n(Years 1980 - 2011)\nTotal Injuries =', format(Total_Injuries, big.mark = ','))
+  vY <- df_Injuries_SS$Injuries
+  vX <- df_Injuries_SS$EVType
+  vMain <- paste('Top', TopNum, 'Injuries caused by Severe Weather\n(Years 1980 - 2011)\nTotal Injuries =', Total_Injuries)
   vYLab <- 'Number of Injuries'
 
   ## Plot Injuries
@@ -110,17 +109,17 @@ shinyServer(function(input, output, session) {
   vCol <- 'Green'
   vColMain <- 'Blue'
 
-  vY <- df_Property_Damages$Value_Mil
-  vX <- df_Property_Damages$EVType
-  vMain <- paste('Top', TopNum, 'Property Damages caused by Severe Weather\n(Years 1980 - 2011)\nTotal Property Damage (USD Millions) =', format(Total_Property_Damages, big.mark = ','))
+  vY <- df_Property_Damages_SS$Value_Mil
+  vX <- df_Property_Damages_SS$EVType
+  vMain <- paste('Top', TopNum, 'Property Damages caused by Severe Weather\n(Years 1980 - 2011)\nTotal Property Damage (USD Millions) =', Total_Property_Damages)
   vYLab <- 'Value of Damage (USD Millions)'
 
   ## Plot Property Damages
   fPlot()
 
-  vY <- df_Crop_Damages$Value_Mil
-  vX <- df_Crop_Damages$EVType
-  vMain <- paste('Top', TopNum, 'Crop Damages caused by Severe Weather\n(Years 1980 - 2011)\nTotal Crop Damage (USD Millions) =', format(Total_Crop_Damages, big.mark = ','))
+  vY <- df_Crop_Damages_SS$Value_Mil
+  vX <- df_Crop_Damages_SS$EVType
+  vMain <- paste('Top', TopNum, 'Crop Damages caused by Severe Weather\n(Years 1980 - 2011)\nTotal Crop Damage (USD Millions) =', Total_Crop_Damages)
 
   ## Plot Crop Damages
   fPlot()
@@ -137,42 +136,50 @@ shinyServer(function(input, output, session) {
   TopNum <- as.integer(input$TopSelection)
 
   ## Subset data
-  df_Fatalities <- df_Fatalities[order(df_Fatalities$Fatalities, decreasing = TRUE), ]
-  df_Fatalities <- head(df_Fatalities, TopNum)
+  df_Fatalities_SS <- df_Fatalities[order(df_Fatalities$Fatalities, decreasing = TRUE), ]
+  df_Fatalities_SS <- head(df_Fatalities_SS, TopNum)
 
-  df_Injuries <- df_Injuries[order(df_Injuries$Injuries, decreasing = TRUE), ]
-  df_Injuries <- head(df_Injuries, TopNum)
+  df_Injuries_SS <- df_Injuries[order(df_Injuries$Injuries, decreasing = TRUE), ]
+  df_Injuries_SS <- head(df_Injuries_SS, TopNum)
 
-  df_Property_Damages <- df_Property_Damages[order(df_Property_Damages$Value_Mil, decreasing = TRUE), ]
-  df_Property_Damages <- head(df_Property_Damages, TopNum)
+  df_Property_Damages_SS <- df_Property_Damages[order(df_Property_Damages$Value_Mil, decreasing = TRUE), ]
+  df_Property_Damages_SS <- head(df_Property_Damages_SS, TopNum)
 
-  df_Crop_Damages <- df_Crop_Damages[order(df_Crop_Damages$Value_Mil, decreasing = TRUE), ]
-  df_Crop_Damages <- head(df_Crop_Damages, TopNum)
+  df_Crop_Damages_SS <- df_Crop_Damages[order(df_Crop_Damages$Value_Mil, decreasing = TRUE), ]
+  df_Crop_Damages_SS <- head(df_Crop_Damages_SS, TopNum)
 
   ## RESULTS
 
   ## -- Top Fatalities --
-  Total_Fatalities <- sum(df_Fatalities$Fatalities)
+  Total_Fatalities <- sum(df_Fatalities_SS$Fatalities)
   Total_Fatalities <- format(Total_Fatalities, big.mark = ',')
-  df_Fatalities$Fatalities <- format(df_Fatalities$Fatalities, big.mark = ',')
 
   ## -- Top Injuries --
-  Total_Injuries <- sum(df_Injuries$Injuries)
+  Total_Injuries <- sum(df_Injuries_SS$Injuries)
   Total_Injuries <- format(Total_Injuries, big.mark = ',')
-  df_Injuries$Injuries <- format(df_Injuries$Injuries, big.mark = ',')
 
   ## -- Top Property Damages --
-  Total_Property_Damages <- sum(df_Property_Damages$Value_Mil)
+  Total_Property_Damages <- sum(df_Property_Damages_SS$Value_Mil)
   Total_Property_Damages <- format(Total_Property_Damages, big.mark = ',')
-  df_Property_Damages$Value_Mil <- format(df_Property_Damages$Value_Mil, big.mark = ',')
 
   ## -- Top Crop Damages --
-  Total_Crop_Damages <- sum(df_Crop_Damages$Value_Mil)
+  Total_Crop_Damages <- sum(df_Crop_Damages_SS$Value_Mil)
   Total_Crop_Damages <- format(Total_Crop_Damages, big.mark = ',')
-  df_Crop_Damages$Value_Mil <- format(df_Crop_Damages$Value_Mil, big.mark = ',')
+
+  ## -- Top Fatalities --
+  df_Fatalities_SS$Fatalities <- format(df_Fatalities_SS$Fatalities, big.mark = ',')
+
+  ## -- Top Injuries --
+  df_Injuries_SS$Injuries <- format(df_Injuries_SS$Injuries, big.mark = ',')
+
+  ## -- Top Property Damages --
+  df_Property_Damages_SS$Value_Mil <- format(df_Property_Damages_SS$Value_Mil, big.mark = ',')
+
+  ## -- Top Crop Damages --
+  df_Crop_Damages_SS$Value_Mil <- format(df_Crop_Damages_SS$Value_Mil, big.mark = ',')
 
   ## -- Output Results in a Table --
-  df_Result <- data.frame(c(df_Fatalities, df_Injuries, df_Property_Damages, df_Crop_Damages))
+  df_Result <- data.frame(c(df_Fatalities_SS, df_Injuries_SS, df_Property_Damages_SS, df_Crop_Damages_SS))
   row.names(df_Result) <- NULL
   names(df_Result) <- c('Fatality Event', '# Fatalities', 'Injury Event', '# Injuries', 'Property Damage Event', 'Damage (Mil)', 'Crop Damage Event', 'Damage (Mil)')
 
